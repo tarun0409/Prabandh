@@ -23,9 +23,31 @@ public class Query {
 	public class Column
 	{
 		private String columnString;
+		private String tableName;
+		private String columnName;
+		private String aggregateFunctionName;
 		Column(String tableName, String columnName)
 		{
+			this.tableName = tableName;
+			this.columnName = columnName;
 			columnString = tableName+"."+columnName;
+		}
+		public void setAggregateFunction(String function)
+		{
+			this.aggregateFunctionName = function;
+			columnString = function+"("+columnString+")";
+		}
+		public String getTableName()
+		{
+			return this.tableName;
+		}
+		public String getColumnName()
+		{
+			return this.columnName;
+		}
+		public String getAggregateFunctionName()
+		{
+			return this.aggregateFunctionName;
 		}
 		public String getColumnString()
 		{
