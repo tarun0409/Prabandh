@@ -10,7 +10,7 @@ public class Sample {
 			Class.forName("com.mysql.jdbc.Driver");  
 			
 			Connection con=DriverManager.getConnection(  
-			"jdbc:mysql://localhost:3306/sample_database","root","TatTvamAsi123!");  
+			"jdbc:mysql://localhost:3306/sample_database","root","*****");  
 			//here sonoo is database name, root is username and password  
 			Statement stmt=con.createStatement();  
 			ResultSet rs=stmt.executeQuery("select * from sample_table");  
