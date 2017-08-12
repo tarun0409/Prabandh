@@ -37,6 +37,25 @@ public class SelectQuery {
 			}
 		}
 	}
+	public void setCriteria(Query.Criteria criteria)
+	{
+		this.criteria = criteria;
+	}
+	public void addJoin(Query.Join join)
+	{
+		if(this.joins.size()==0)
+		{
+			joins.add(join);
+		}
+		else
+		{
+			Query.Join oldJoin = joins.get(0);
+			String oldTable1 = oldJoin.getJoinTable1();
+			String oldTable2 = oldJoin.getJoinTable2();
+			String newTable1 = join.getJoinTable1();
+			
+		}
+	}
 	public void setOrderBy(ArrayList<Query.Column> orderByColumns, String order)
 	{
 		orderBy = "ORDER BY";
