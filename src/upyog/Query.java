@@ -26,7 +26,7 @@ public class Query {
 		private String tableName;
 		private String columnName;
 		private String aggregateFunctionName;
-		Column(String tableName, String columnName)
+		public Column(String tableName, String columnName)
 		{
 			this.tableName = tableName;
 			this.columnName = columnName;
@@ -143,28 +143,47 @@ public class Query {
 	}
 	public class Join
 	{
-		private String joinString;
 		private String table1;
 		private String table2;
-		private String joinCriteria;
+		private Query.Criteria joinCriteria;
 		public Join(String table1, String table2, Criteria criteria)
 		{
-			joinString = "";
-			String jntmp = table1;
 			this.table1 = table1;
-			jntmp+=" join ";
-			jntmp+=table2;
 			this.table2 = table2;
 			if(criteria!=null)
 			{
-				this.joinCriteria = criteria.getCriteriaAsString();
-				jntmp+= " on "+this.joinCriteria;
+				this.joinCriteria = criteria;
 			}
-			this.joinString = jntmp;
 		}
 		public String getJoinAsString()
 		{
-			return this.joinString;
+			String joinString = this.table1;
+			joinString+=" JOIN ";
+			joinString+=this.table2;
+			if(this.joinCriteria!=null)
+			{
+				joinString+=" ON "+this.joinCriteria.getCriteriaAsString();
+			}
+			return joinString;
+		}
+		public String getJoinAsString(String baseTableName)
+		{
+			String joinString = "JOIN";
+			String table1 = this.table1;
+			String table2 = this.table2;
+			if(baseTableName.equals(table1))
+			{
+				joinString+=" "+table2;
+			}
+			else if(baseTableName.equals(table2))
+			{
+				joinString+=" "+table1;
+			}
+			if(this.joinCriteria!=null)
+			{
+				joinString+=" ON "+this.joinCriteria.getCriteriaAsString();
+			}
+			return joinString;
 		}
 		public String getJoinTable1()
 		{
@@ -176,7 +195,7 @@ public class Query {
 		}
 		public String getJoinCriteriaAsString()
 		{
-			return this.joinCriteria;
+			return this.joinCriteria.getCriteriaAsString();
 		}
 		
 	}

@@ -3,6 +3,10 @@ package database;
 
 public class Table {
 
+	public static enum Tables
+	{
+		ACCOUNT;
+	}
 	public static class Account 
 	{
 		public static String ACCOUNT_ID = "ACCOUNT_ID";

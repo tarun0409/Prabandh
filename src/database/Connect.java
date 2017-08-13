@@ -13,7 +13,7 @@ public class Connect {
 		{
 			try
 			{
-				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/prabandh","root","*****");
+				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/prabandh","root","******");
 				prabandh = con;
 			}
 			catch(SQLException s)
