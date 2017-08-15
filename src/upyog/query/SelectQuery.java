@@ -1,6 +1,8 @@
-package upyog;
+package upyog.query;
 
 import java.util.ArrayList;
+
+import upyog.query.Query;
 
 public class SelectQuery {
 	private ArrayList<Query.Column> selectColumns;

@@ -1,4 +1,4 @@
-package upyog;
+package upyog.query;
 
 import java.util.ArrayList;
 

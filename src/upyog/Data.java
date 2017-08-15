@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import database.Connect;
+import upyog.query.InsertQuery;
+import upyog.query.SelectQuery;
 
 public class Data {
 	
@@ -51,6 +53,22 @@ public class Data {
 		}
 		
 		return rs;
+	}
+	public void insertDataIntoDB(InsertQuery iq)
+	{
+		try
+		{
+			if(connection!=null)
+			{
+				Statement st = connection.createStatement();
+				st.executeUpdate(iq.getInsertQueryAsString());
+			}
+		}
+		catch(SQLException sqe)
+		{
+			System.out.println("Something went wrong in executing the query \n"+iq.getInsertQueryAsString());
+		}
+		
 	}
 	
 	public JSONObject getDataAsJSONObject(ResultSet rs)
@@ -102,6 +120,10 @@ public class Data {
 		return data;
 	}
 	
+	public void insertData(InsertQuery iq)
+	{
+		insertDataIntoDB(iq);
+	}
 	public Object getData(SelectQuery sq)
 	{
 		ResultSet rs = getDataFromDB(sq);
