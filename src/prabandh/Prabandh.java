@@ -5,10 +5,12 @@ import java.util.HashMap;
 import org.json.JSONObject;
 
 import database.schema.ACCOUNT;
+import upyog.query.DeleteQuery;
 import upyog.query.InsertQuery;
 import upyog.query.Query;
 import upyog.Data;
 import upyog.query.SelectQuery;
+import upyog.query.UpdateQuery;
 public class Prabandh {
 
 	public static void main(String[] args) {
@@ -53,6 +55,36 @@ public class Prabandh {
 //		iq.addInsertEntry(insertRow);
 //		data.insertData(iq);
 		//System.out.println(insertRes.toString());
+		
+		
+		//UPDATE QUERY
+//		Query query = new Query();
+//		UpdateQuery uq = new UpdateQuery();
+//		uq.setUpdateTableName(ACCOUNT.TABLE);
+//		uq.setValueForColumn(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_NAME),"UpdatedAccountName2");
+//		uq.setValueForColumn(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_MANAGER),"UpdatedAccountManager2");
+//		Query.Criteria cr = query.new Criteria(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_ID),10,Query.comparison_operators.EQUAL_TO);
+//		uq.setCriteria(cr);
+//		int rs = data.updateData(uq);
+//		if(rs>0)
+//		{
+//			System.out.println(rs+" record(s) updated successfully!");
+//		}
+		
+		
+		//DELETE QUERY
+		Query query = new Query();
+		DeleteQuery dq = new DeleteQuery();
+		dq.setDeleteTableName(ACCOUNT.TABLE);
+		Query.Criteria dcr = query.new Criteria(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_ID),6,Query.comparison_operators.EQUAL_TO);
+		dq.setDeleteCriteria(dcr);
+		int rs = data.deleteData(dq);
+		if(rs>0)
+		{
+			System.out.println(rs+" record(s) deleted successfully!");
+		}
+		
+		
 		
 
 	}

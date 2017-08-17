@@ -56,15 +56,16 @@ public class UpdateQuery {
 			String columnName = valueEntry.getKey();
 			Object value = valueEntry.getValue();
 			queryString.append(" "+columnName+" = "+value);
-			if(cnt==len)
+			if(cnt!=len)
 			{
 				queryString.append(",");
 			}
 			cnt++;
-			if(this.criteria!=null)
-			{
-				queryString.append(" WHERE "+this.criteria+";");
-			}
+			
+		}
+		if(this.criteria!=null)
+		{
+			queryString.append(" WHERE "+this.criteria+";");
 		}
 		return queryString.toString();
 	}

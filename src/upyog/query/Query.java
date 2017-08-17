@@ -3,22 +3,25 @@ package upyog.query;
 import java.util.ArrayList;
 
 public class Query {
-	public static enum comparison_operators
+	
+	public static class comparison_operators
 	{
-		EQUAL_TO("="),NOT_EQUAL_TO("!="),GREATER_THAN(">"),LESSER_THAN("<"),GREATER_THAN_EQUAL_TO(">="),LESSER_THAN_EQUAL_TO("<="),IN("IN"),NOT_IN("NOT IN"),LIKE("LIKE"),NOT_LIKE("NOT LIKE");
-		private String operator;
-		comparison_operators(String operator)
-		{
-			this.operator = operator;
-		}
-		public String operator()
-		{
-			return this.operator;
-		}
+		public static String EQUAL_TO = "=";
+		public static String NOT_EQUAL_TO = "!=";
+		public static String GREATER_THAN = ">";
+		public static String LESSER_THAN = "<";
+		public static String GREATER_THAN_EQUAL_TO = ">=";
+		public static String LESSER_THAN_EQUAL_TO = "<=";
+		public static String IN = "IN";
+		public static String NOT_IN = "NOT IN";
+		public static String LIKE = "LIKE";
+		public static String NOT_LIKE = "NOT LIKE";
 	}
-	public static enum logical_operators
+	public static class logical_operators
 	{
-		AND,OR,NOT;
+		public static String AND = "AND";
+		public static String OR = "OR";
+		public static String NOT = "NOT";
 	}
 	public class Column
 	{
@@ -114,6 +117,10 @@ public class Query {
 			else if((opObj instanceof String) || (opObj instanceof Integer) || (opObj instanceof Boolean))
 			{
 				return opObj.toString();
+			}
+			else if(opObj instanceof Query.Column)
+			{
+				return ((Query.Column) opObj).getColumnName();
 			}
 			else if(opObj instanceof ArrayList)
 			{
