@@ -11,6 +11,8 @@ import upyog.query.Query;
 import upyog.Data;
 import upyog.query.SelectQuery;
 import upyog.query.UpdateQuery;
+import vasthu.Account;
+import vasthu.Contact;
 public class Prabandh {
 
 	public static void main(String[] args) {
@@ -73,16 +75,19 @@ public class Prabandh {
 		
 		
 		//DELETE QUERY
-		Query query = new Query();
-		DeleteQuery dq = new DeleteQuery();
-		dq.setDeleteTableName(ACCOUNT.TABLE);
-		Query.Criteria dcr = query.new Criteria(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_ID),6,Query.comparison_operators.EQUAL_TO);
-		dq.setDeleteCriteria(dcr);
-		int rs = data.deleteData(dq);
-		if(rs>0)
-		{
-			System.out.println(rs+" record(s) deleted successfully!");
-		}
+//		Query query = new Query();
+//		DeleteQuery dq = new DeleteQuery();
+//		dq.setDeleteTableName(ACCOUNT.TABLE);
+//		Query.Criteria dcr = query.new Criteria(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_ID),6,Query.comparison_operators.EQUAL_TO);
+//		dq.setDeleteCriteria(dcr);
+//		int rs = data.deleteData(dq);
+//		if(rs>0)
+//		{
+//			System.out.println(rs+" record(s) deleted successfully!");
+//		}
+		
+		//Account.insertAccount("CustomAccount1", "CustomAccount1Owner", "CustomAccount1Manager", new Float(100.50), null);
+		Contact.insertContact("InsertedPerson2", "5431", null, "ips2@sample.com", null, null, null);
 		
 		
 		
