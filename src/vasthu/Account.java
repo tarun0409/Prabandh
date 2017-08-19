@@ -2,118 +2,101 @@ package vasthu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import database.schema.ACCOUNT;
 import upyog.Data;
+import upyog.Field;
+import upyog.query.DeleteQuery;
 import upyog.query.InsertQuery;
 import upyog.query.Query;
+import upyog.query.UpdateQuery;
 
 public class Account {
 	
-	private String accountName;
-	private String accountOwner;
-	private String accountManager;
-	private float accountBalance;
-	private String notes;
+	Field accountFieldObj;
 	
-	
-	public Account() {}
-	
-	public Account(String accountName, String accountOwner, String accountManager, float accountBalance, String notes)
+	private Field getAccountFieldObject()
 	{
-		this.accountName = accountName;
-		this.accountOwner = accountOwner;
-		this.accountManager = accountManager;
-		this.accountBalance = accountBalance;
-	}
-
-	public String getAccountName() {
-		return accountName;
-	}
-
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
-
-	public String getAccountOwner() {
-		return accountOwner;
-	}
-
-	public void setAccountOwner(String accountOwner) {
-		this.accountOwner = accountOwner;
-	}
-
-	public String getAccountManager() {
-		return accountManager;
-	}
-
-	public void setAccountManager(String accountManager) {
-		this.accountManager = accountManager;
-	}
-
-	public float getAccountBalance() {
-		return accountBalance;
-	}
-
-	public void setAccountBalance(float accountBalance) {
-		this.accountBalance = accountBalance;
-	}
-
-	public String getNotes() {
-		return notes;
-	}
-
-	public void setNotes(String notes) {
-		this.notes = notes;
+		if(accountFieldObj==null)
+		{
+			accountFieldObj = new Field(ACCOUNT.TABLE);
+		}
+		return accountFieldObj;
 	}
 	
-	public static int insertAccount(String accountName, String accountOwner, String accountManager, float accountBalance, String notes)
+	public int insertAccount(HashMap<String,Object> account)
 	{
-		ArrayList<Account> accounts = new ArrayList<Account>();
-		accounts.add(new Account(accountName,accountOwner,accountManager,accountBalance,notes));
-		int rs = insertAccounts(accounts);
-		return rs;
+		ArrayList<HashMap<String,Object>> accounts = new ArrayList<HashMap<String,Object>>();
+		accounts.add(account);
+		return (insertAccounts(accounts));
 	}
-	public int insertAccount()
-	{
-		ArrayList<Account> accounts = new ArrayList<Account>();
-		accounts.add(this);
-		int rs = insertAccounts(accounts);
-		return rs;
-	}
-	public static int insertAccounts(ArrayList<Account> accounts)
+	public int insertAccounts(ArrayList<HashMap<String,Object>> accounts)
 	{
 		Data data = new Data();
+		Field fieldObj = this.getAccountFieldObject();
+		HashMap<String,String> fieldLabelVsColumnMap = fieldObj.getFieldLabelVsColumnMap();
 		Query query = new Query();
-		InsertQuery iq = new InsertQuery();
-		for(Account account : accounts)
+		InsertQuery iq  = new InsertQuery();
+		iq.setInsertTableName(ACCOUNT.TABLE);
+		for(HashMap<String,Object> account : accounts)
 		{
-			if(account.accountName==null || account.accountOwner==null || account.accountManager==null)
-			{
-				System.out.println("Unable to insert account. Check if any of mandatory values are null!");
-				break;
-			}
-			iq.setInsertTableName(ACCOUNT.TABLE);
 			HashMap<Query.Column,Object> insertRow = new HashMap<Query.Column,Object>();
-			insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_NAME),account.accountName);
-			insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_OWNER),account.accountOwner);
-			insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_MANAGER),account.accountManager);
-			if(account.accountBalance>0.0F)
+			for(Map.Entry<String, Object> accountEntry : account.entrySet())
 			{
-				insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_BALANCE),account.accountBalance);
-			}
-			if(account.notes!=null)
-			{
-				insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.NOTES),account.notes);
+				String fieldLabel = accountEntry.getKey();
+				Object value = accountEntry.getValue();
+				if(fieldLabelVsColumnMap.containsKey(fieldLabel))
+				{
+					String columnName = fieldLabelVsColumnMap.get(fieldLabel);
+					Query.Column column = query.new Column(ACCOUNT.TABLE,columnName);
+					insertRow.put(column, value);
+				}
 			}
 			iq.addInsertEntry(insertRow);
 		}
-		int rs = data.insertData(iq);
-		if(rs>0)
-		{
-			System.out.println(rs+" record(s) inserted successfully");
-		}
-		return rs;
+		return data.insertData(iq);
 	}
-
+	
+	public int updateAccount(int accountId, HashMap<String,Object> account)
+	{
+		Data data = new Data();
+		Field fieldObj = this.getAccountFieldObject();
+		HashMap<String,String> fieldLabelVsColumnMap = fieldObj.getFieldLabelVsColumnMap();
+		Query query = new Query();
+		UpdateQuery uq = new UpdateQuery();
+		uq.setUpdateTableName(ACCOUNT.TABLE);
+		for(Map.Entry<String, Object> accountEntry : account.entrySet())
+		{
+			String fieldLabel = accountEntry.getKey();
+			Object value = accountEntry.getValue();
+			if(fieldLabelVsColumnMap.containsKey(fieldLabel))
+			{
+				String columnName = fieldLabelVsColumnMap.get(fieldLabel);
+				Query.Column column = query.new Column(ACCOUNT.TABLE,columnName);
+				uq.setValueForColumn(column, value);
+			}
+		}
+		Query.Criteria upCr = query.new Criteria(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_ID),accountId,Query.comparison_operators.EQUAL_TO);
+		uq.setCriteria(upCr);	
+		return data.updateData(uq);
+	}
+	
+	public int deleteAccount(int accountId)
+	{
+		ArrayList<Integer> accountIds = new ArrayList<Integer>();
+		accountIds.add(accountId);
+		return deleteAccounts(accountIds);
+	}
+	public int deleteAccounts(ArrayList<Integer> accountIds)
+	{
+		Data data = new Data();
+		Query query = new Query();
+		DeleteQuery dq = new DeleteQuery();
+		dq.setDeleteTableName(ACCOUNT.TABLE);
+		Query.Criteria dlCr = query.new Criteria(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_ID),accountIds,Query.comparison_operators.IN);
+		dq.setDeleteCriteria(dlCr);
+		return data.deleteData(dq);
+	}
+	
 }

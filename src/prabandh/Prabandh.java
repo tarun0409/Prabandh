@@ -1,5 +1,6 @@
 package prabandh;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONObject;
@@ -17,79 +18,61 @@ public class Prabandh {
 
 	public static void main(String[] args) {
 		
-		Data data = new Data();
-		data.setDataType("json");
+		Contact contactObj = new Contact();
 		
-		
-		//SELECT QUERY
-//		SelectQuery sq = new SelectQuery();
-//		Query query = new Query();
-//		sq.addSelectColumn(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_ID));
-//		sq.addSelectColumn(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_BALANCE));
-//		sq.addSelectColumn(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_NAME));
-//		sq.addSelectColumn(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_MANAGER));
-//		sq.addSelectColumn(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_OWNER));
-//		JSONObject myData = (JSONObject)data.getData(sq);
-//		System.out.println(myData.toString());
-		
-		
-		//INSERT QUERY
-//		Query query = new Query();
-//		InsertQuery iq  = new InsertQuery();
-//		iq.setInsertTableName(ACCOUNT.TABLE);
-//		HashMap<Query.Column,Object> insertRow = new HashMap<Query.Column,Object>();
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_NAME),"InsertedAccount1");
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_OWNER),"InsertedAccount1Owner");
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_MANAGER),"InsertedAccount1Manager");
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_BALANCE),3950.50);
-//		iq.addInsertEntry(insertRow);
-//		insertRow = new HashMap<Query.Column,Object>();
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_NAME),"InsertedAccount2");
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_OWNER),"InsertedAccount2Owner");
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_MANAGER),"InsertedAccount2Manager");
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_BALANCE),3850.70);
-//		iq.addInsertEntry(insertRow);
-//		insertRow = new HashMap<Query.Column,Object>();
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_NAME),"InsertedAccount3");
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_OWNER),"InsertedAccount3Owner");
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_MANAGER),"InsertedAccount3Manager");
-//		insertRow.put(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_BALANCE),3750.70);
-//		iq.addInsertEntry(insertRow);
-//		data.insertData(iq);
-		//System.out.println(insertRes.toString());
-		
-		
-		//UPDATE QUERY
-//		Query query = new Query();
-//		UpdateQuery uq = new UpdateQuery();
-//		uq.setUpdateTableName(ACCOUNT.TABLE);
-//		uq.setValueForColumn(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_NAME),"UpdatedAccountName2");
-//		uq.setValueForColumn(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_MANAGER),"UpdatedAccountManager2");
-//		Query.Criteria cr = query.new Criteria(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_ID),10,Query.comparison_operators.EQUAL_TO);
-//		uq.setCriteria(cr);
-//		int rs = data.updateData(uq);
+		//INSERT RECORDS
+//		ArrayList<HashMap<String,Object>> contacts = new ArrayList<HashMap<String,Object>>();
+//		HashMap<String,Object> contact = new HashMap<String,Object>();
+//		contact.put("Contact Name", "NewContact2");
+//		contact.put("Primary Phone", "+991 23565444");
+//		contact.put("Secondary Phone", "+99 446534");
+//		contact.put("Email", "newcontact2@company1.com");
+//		contacts.add(contact);
+//		contact = new HashMap<String,Object>();
+//		contact.put("Contact Name", "NewContact3");
+//		contact.put("Primary Phone", "+991 2345844");
+//		contact.put("Secondary Phone", "+99 432434");
+//		contact.put("Email", "newcontact3@company1.com");
+//		contacts.add(contact);
+//		contact = new HashMap<String,Object>();
+//		contact.put("Contact Name", "NewContact4");
+//		contact.put("Primary Phone", "+991 2345844");
+//		contact.put("Secondary Phone", "+99 432434");
+//		contact.put("Email", "newcontact4@company1.com");
+//		contacts.add(contact);
+//		//int rs = contactObj.insertContact(contact);
+//		int rs = contactObj.insertContacts(contacts);
 //		if(rs>0)
 //		{
-//			System.out.println(rs+" record(s) updated successfully!");
+//			System.out.println(rs+" Contact(s) inserted successfully");
 //		}
 		
 		
-		//DELETE QUERY
-//		Query query = new Query();
-//		DeleteQuery dq = new DeleteQuery();
-//		dq.setDeleteTableName(ACCOUNT.TABLE);
-//		Query.Criteria dcr = query.new Criteria(query.new Column(ACCOUNT.TABLE,ACCOUNT.ACCOUNT_ID),6,Query.comparison_operators.EQUAL_TO);
-//		dq.setDeleteCriteria(dcr);
-//		int rs = data.deleteData(dq);
+		
+		//UPDATE RECORDS
+//		ArrayList<HashMap<String,Object>> contacts = new ArrayList<HashMap<String,Object>>();
+//		HashMap<String,Object> contact = new HashMap<String,Object>();
+//		contact.put("Primary Phone", "+91 23565444");
+//		contact.put("Secondary Phone", "+9 44653");
+//		contact.put("Email", "newcontact2@company2.com");
+//		contacts.add(contact);
+//		int rs = contactObj.updateContact(9, contact);
 //		if(rs>0)
 //		{
-//			System.out.println(rs+" record(s) deleted successfully!");
+//			System.out.println(rs+" Contact(s) updated successfully");
 //		}
 		
-		//Account.insertAccount("CustomAccount1", "CustomAccount1Owner", "CustomAccount1Manager", new Float(100.50), null);
-		Contact.insertContact("InsertedPerson2", "5431", null, "ips2@sample.com", null, null, null);
 		
-		
+		//DELETE RECORDS
+//		ArrayList<Integer> deleteList = new ArrayList<Integer>();
+//		deleteList.add(5);
+//		deleteList.add(7);
+//		deleteList.add(10);
+//		int rs = contactObj.deleteContacts(deleteList);
+//		if(rs>0)
+//		{
+//			System.out.println(rs+" Contact(s) deleted successfully");
+//		}
 		
 
 	}

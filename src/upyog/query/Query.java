@@ -114,9 +114,13 @@ public class Query {
 			{
 				return null;
 			}
-			else if((opObj instanceof String) || (opObj instanceof Integer) || (opObj instanceof Boolean))
+			else if((opObj instanceof Integer) || (opObj instanceof Boolean) || (opObj instanceof Float))
 			{
 				return opObj.toString();
+			}
+			else if(opObj instanceof String)
+			{
+				return "\'"+opObj.toString()+"\'";
 			}
 			else if(opObj instanceof Query.Column)
 			{

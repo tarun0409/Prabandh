@@ -2,139 +2,101 @@ package vasthu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import database.schema.CONTACT;
 import upyog.Data;
+import upyog.Field;
+import upyog.query.DeleteQuery;
 import upyog.query.InsertQuery;
 import upyog.query.Query;
+import upyog.query.UpdateQuery;
 
 public class Contact {
 	
-	private String contactName;
-	private String phonePrimary;
-	private String phoneSecondary;
-	private String emailID;
-	private String addressPrimary;
-	private String addressSecondary;
-	private String notes;
+Field contactFieldObj;
 	
-	public Contact() {}
-	
-	public Contact(String contactName, String phonePrimary, String phoneSecondary, String emailID, String addressPrimary, String addressSecondary, String notes)
+	private Field getContactFieldObject()
 	{
-		this.contactName = contactName;
-		this.phonePrimary = phonePrimary;
-		this.phoneSecondary = phoneSecondary;
-		this.emailID = emailID;
-		this.addressPrimary = addressPrimary;
-		this.addressSecondary = addressSecondary;
-		this.notes = notes;
+		if(contactFieldObj==null)
+		{
+			contactFieldObj = new Field(CONTACT.TABLE);
+		}
+		return contactFieldObj;
 	}
 	
-	public String getContactName() {
-		return contactName;
-	}
-	public void setContactName(String contactName) {
-		this.contactName = contactName;
-	}
-	public String getPhonePrimary() {
-		return phonePrimary;
-	}
-	public void setPhonePrimary(String phonePrimary) {
-		this.phonePrimary = phonePrimary;
-	}
-	public String getPhoneSecondary() {
-		return phoneSecondary;
-	}
-	public void setPhoneSecondary(String phoneSecondary) {
-		this.phoneSecondary = phoneSecondary;
-	}
-	public String getEmailID() {
-		return emailID;
-	}
-	public void setEmailID(String emailID) {
-		this.emailID = emailID;
-	}
-	public String getAddressPrimary() {
-		return addressPrimary;
-	}
-	public void setAddressPrimary(String addressPrimary) {
-		this.addressPrimary = addressPrimary;
-	}
-	public String getAddressSecondary() {
-		return addressSecondary;
-	}
-	public void setAddressSecondary(String addressSecondary) {
-		this.addressSecondary = addressSecondary;
-	}
-	public String getNotes() {
-		return notes;
-	}
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
-	
-	public static int insertContact(String contactName, String phonePrimary, String phoneSecondary, String emailID, String addressPrimary, String addressSecondary, String notes)
+	public int insertContact(HashMap<String,Object> contact)
 	{
-		ArrayList<Contact> contacts = new ArrayList<Contact>();
-		contacts.add(new Contact(contactName,phonePrimary,phoneSecondary,emailID,addressPrimary,addressSecondary,notes));
-		int rs = insertContacts(contacts);
-		return rs;
+		ArrayList<HashMap<String,Object>> contacts = new ArrayList<HashMap<String,Object>>();
+		contacts.add(contact);
+		return (insertContacts(contacts));
 	}
-	public int insertContact()
-	{
-		ArrayList<Contact> contacts = new ArrayList<Contact>();
-		contacts.add(this);
-		int rs = insertContacts(contacts);
-		return rs;
-	}
-	public static int insertContacts(ArrayList<Contact> contacts)
+	public int insertContacts(ArrayList<HashMap<String,Object>> contacts)
 	{
 		Data data = new Data();
+		Field fieldObj = this.getContactFieldObject();
+		HashMap<String,String> fieldLabelVsColumnMap = fieldObj.getFieldLabelVsColumnMap();
 		Query query = new Query();
-		InsertQuery iq = new InsertQuery();
-		for(Contact contact : contacts)
+		InsertQuery iq  = new InsertQuery();
+		iq.setInsertTableName(CONTACT.TABLE);
+		for(HashMap<String,Object> contact : contacts)
 		{
-			if(contact.contactName==null)
-			{
-				System.out.println("Unable to insert account. Check if any of mandatory values are null!");
-				break;
-			}
-			iq.setInsertTableName(CONTACT.TABLE);
 			HashMap<Query.Column,Object> insertRow = new HashMap<Query.Column,Object>();
-			insertRow.put(query.new Column(CONTACT.TABLE,CONTACT.CONTACT_NAME),contact.contactName);
-			if(contact.phonePrimary!=null)
+			for(Map.Entry<String, Object> contactEntry : contact.entrySet())
 			{
-				insertRow.put(query.new Column(CONTACT.TABLE,CONTACT.PHONE_PRIMARY),contact.phonePrimary);
-			}
-			if(contact.phoneSecondary!=null)
-			{
-				insertRow.put(query.new Column(CONTACT.TABLE,CONTACT.PHONE_SECONDARY),contact.phoneSecondary);
-			}
-			if(contact.emailID!=null)
-			{
-				insertRow.put(query.new Column(CONTACT.TABLE,CONTACT.EMAIL_ID),contact.emailID);
-			}
-			if(contact.addressPrimary!=null)
-			{
-				insertRow.put(query.new Column(CONTACT.TABLE,CONTACT.ADDRESS_PRIMARY),contact.addressPrimary);
-			}
-			if(contact.addressSecondary!=null)
-			{
-				insertRow.put(query.new Column(CONTACT.TABLE,CONTACT.ADDRESS_SECONDARY),contact.addressSecondary);
-			}
-			if(contact.notes!=null)
-			{
-				insertRow.put(query.new Column(CONTACT.TABLE,CONTACT.NOTES),contact.notes);
+				String fieldLabel = contactEntry.getKey();
+				Object value = contactEntry.getValue();
+				if(fieldLabelVsColumnMap.containsKey(fieldLabel))
+				{
+					String columnName = fieldLabelVsColumnMap.get(fieldLabel);
+					Query.Column column = query.new Column(CONTACT.TABLE,columnName);
+					insertRow.put(column, value);
+				}
 			}
 			iq.addInsertEntry(insertRow);
 		}
-		int rs = data.insertData(iq);
-		if(rs>0)
+		return data.insertData(iq);
+	}
+	
+	public int updateContact(int contactId, HashMap<String,Object> contact)
+	{
+		Data data = new Data();
+		Field fieldObj = this.getContactFieldObject();
+		HashMap<String,String> fieldLabelVsColumnMap = fieldObj.getFieldLabelVsColumnMap();
+		Query query = new Query();
+		UpdateQuery uq = new UpdateQuery();
+		uq.setUpdateTableName(CONTACT.TABLE);
+		for(Map.Entry<String, Object> contactEntry : contact.entrySet())
 		{
-			System.out.println(rs+" record(s) inserted successfully");
+			String fieldLabel = contactEntry.getKey();
+			Object value = contactEntry.getValue();
+			if(fieldLabelVsColumnMap.containsKey(fieldLabel))
+			{
+				String columnName = fieldLabelVsColumnMap.get(fieldLabel);
+				Query.Column column = query.new Column(CONTACT.TABLE,columnName);
+				uq.setValueForColumn(column, value);
+			}
 		}
-		return rs;
+		Query.Criteria upCr = query.new Criteria(query.new Column(CONTACT.TABLE,CONTACT.CONTACT_ID),contactId,Query.comparison_operators.EQUAL_TO);
+		uq.setCriteria(upCr);	
+		return data.updateData(uq);
+	}
+	
+	public int deleteContact(int contactId)
+	{
+		ArrayList<Integer> contactIds = new ArrayList<Integer>();
+		contactIds.add(contactId);
+		return deleteContacts(contactIds);
+	}
+	public int deleteContacts(ArrayList<Integer> contactIds)
+	{
+		Data data = new Data();
+		Query query = new Query();
+		DeleteQuery dq = new DeleteQuery();
+		dq.setDeleteTableName(CONTACT.TABLE);
+		Query.Criteria dlCr = query.new Criteria(query.new Column(CONTACT.TABLE,CONTACT.CONTACT_ID),contactIds,Query.comparison_operators.IN);
+		dq.setDeleteCriteria(dlCr);
+		return data.deleteData(dq);
 	}
 
 }
