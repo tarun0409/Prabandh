@@ -14,38 +14,58 @@ import upyog.query.SelectQuery;
 import upyog.query.UpdateQuery;
 import vasthu.Account;
 import vasthu.Contact;
+import vasthu.Saree;
+import vasthu.Transaction;
 public class Prabandh {
 
 	public static void main(String[] args) {
 		
-		Contact contactObj = new Contact();
+		Transaction transactionObj = new Transaction();
 		
 		//INSERT RECORDS
-//		ArrayList<HashMap<String,Object>> contacts = new ArrayList<HashMap<String,Object>>();
-//		HashMap<String,Object> contact = new HashMap<String,Object>();
-//		contact.put("Contact Name", "NewContact2");
-//		contact.put("Primary Phone", "+991 23565444");
-//		contact.put("Secondary Phone", "+99 446534");
-//		contact.put("Email", "newcontact2@company1.com");
-//		contacts.add(contact);
-//		contact = new HashMap<String,Object>();
-//		contact.put("Contact Name", "NewContact3");
-//		contact.put("Primary Phone", "+991 2345844");
-//		contact.put("Secondary Phone", "+99 432434");
-//		contact.put("Email", "newcontact3@company1.com");
-//		contacts.add(contact);
-//		contact = new HashMap<String,Object>();
-//		contact.put("Contact Name", "NewContact4");
-//		contact.put("Primary Phone", "+991 2345844");
-//		contact.put("Secondary Phone", "+99 432434");
-//		contact.put("Email", "newcontact4@company1.com");
-//		contacts.add(contact);
-//		//int rs = contactObj.insertContact(contact);
-//		int rs = contactObj.insertContacts(contacts);
-//		if(rs>0)
-//		{
-//			System.out.println(rs+" Contact(s) inserted successfully");
-//		}
+		ArrayList<HashMap<String,Object>> transactions = new ArrayList<HashMap<String,Object>>();
+		HashMap<String,Object> transaction = new HashMap<String,Object>();
+		transaction.put("Transaction Date","2017-09-29");
+		transaction.put("Transaction Type", "BUY");
+		transaction.put("Item ID", 16);
+		transaction.put("Quantity", 3);
+		transaction.put("Transaction Amount", 3000);
+		transaction.put("Account ID", 1);
+		transaction.put("Buyer", 1);
+		transaction.put("Seller", 3);
+		
+		transactions.add(transaction);
+
+		
+		transaction = new HashMap<String,Object>();
+		transaction.put("Transaction Date","2017-09-30");
+		transaction.put("Transaction Type", "SELL");
+		transaction.put("Item ID", 15);
+		transaction.put("Quantity", 2);
+		transaction.put("Transaction Amount", 4000.00);
+		transaction.put("Account ID", 1);
+		transaction.put("Buyer", 4);
+		transaction.put("Seller", 1);
+			
+		transactions.add(transaction);
+		
+		transaction = new HashMap<String,Object>();
+		transaction.put("Transaction Date","2017-09-30");
+		transaction.put("Transaction Type", "SELL");
+		transaction.put("Item ID", 16);
+		transaction.put("Quantity", 1);
+		transaction.put("Transaction Amount", 1200.00);
+		transaction.put("Account ID", 1);
+		transaction.put("Buyer", 6);
+		transaction.put("Seller", 1);
+			
+		transactions.add(transaction);
+		//int rs = transactionObj.insertTransaction(transaction);
+		int rs = transactionObj.insertTransactions(transactions);
+		if(rs>0)
+		{
+			System.out.println(rs+" Transaction(s) inserted successfully");
+		}
 		
 		
 		

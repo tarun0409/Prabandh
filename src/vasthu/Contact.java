@@ -14,7 +14,7 @@ import upyog.query.UpdateQuery;
 
 public class Contact {
 	
-Field contactFieldObj;
+	Field contactFieldObj;
 	
 	private Field getContactFieldObject()
 	{
